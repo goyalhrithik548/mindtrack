@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Habits - MindTrack</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<h2>Your Habits</h2>
+<form method="POST">
+    <input type="text" name="habit_name" placeholder="New Habit" required>
+    <button type="submit">Add Habit</button>
+</form>
+<ul>
+{% for habit in habits %}
+    <li>{{ habit.name }} - {{ 'Done' if habit.completed else 'Pending' }}</li>
+{% endfor %}
+</ul>
+<a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>

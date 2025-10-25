@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mood Tracker - MindTrack</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<h2>Your Mood Tracker</h2>
+<form method="POST">
+    <input type="text" name="mood" placeholder="Your Mood" required>
+    <button type="submit">Add Mood</button>
+</form>
+<ul>
+{% for mood in moods %}
+    <li>{{ mood.date }}: {{ mood.mood }}</li>
+{% endfor %}
+</ul>
+<a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>
