@@ -225,10 +225,34 @@ def habits():
             "habit_name": habit_name,
             "duration": duration,
             "created_at": datetime.now(),
-            "completed_dates": []
+            "completed_dates": [],
+            "completed": False
         })
     user_habits = list(habits_col.find({"user_email": session['email']}))
     return render_template('habits.html', habits=user_habits)
+
+@app.route('/complete_habit/<habit_id>')
+def complete_habit(habit_id):
+    if 'email' not in session:
+        return redirect(url_for('login'))
+
+    habits_col.update_one(
+        {"_id": ObjectId(habit_id), "user_email": session['email']},
+        {"$set": {"completed": True}}
+    )
+    flash("Habit marked as completed!", "success")
+    return redirect(url_for('habits'))
+
+@app.route('/remove_habit/<habit_id>')
+def remove_habit(habit_id):
+    if 'email' not in session:
+        return redirect(url_for('login'))
+
+    habits_col.delete_one(
+        {"_id": ObjectId(habit_id), "user_email": session['email']}
+    )
+    flash("Habit removed successfully!", "info")
+    return redirect(url_for('habits'))
 
 # ---------- Goals ----------
 @app.route('/goals', methods=['GET', 'POST'])

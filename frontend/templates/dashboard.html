@@ -8,41 +8,35 @@
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 <style>
-  body { font-family: 'Inter', sans-serif; }
-  .card { @apply bg-white shadow-md rounded-xl p-6 mb-6; }
+body { font-family: 'Inter', sans-serif; }
+.card { @apply bg-white shadow-md rounded-xl p-6 mb-6; }
 </style>
 </head>
 <body class="bg-gray-50 p-6">
 
-<!-- Navbar -->
 <div class="flex justify-between items-center mb-8">
     <h1 class="text-3xl font-bold text-gray-800">Hello, {{ username }} 👋</h1>
     <a href="{{ url_for('logout') }}" class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg shadow">Logout</a>
 </div>
 
-<!-- Motivation -->
 <div class="card text-center bg-gradient-to-r from-green-100 to-blue-100">
     <p class="text-gray-700 italic text-lg">{{ motivation }}</p>
 </div>
 
-<!-- Today's Mood -->
-<div class="card text-center">
+<div class="card">
     <h2 class="text-xl font-semibold mb-2 text-gray-700">Today's Mood</h2>
-    <p class="text-5xl my-2">{{ mood }}</p>
+    <p class="text-5xl text-center">{{ mood }}</p>
     <a href="{{ url_for('mood_input') }}" class="text-blue-600 hover:underline mt-2 inline-block">Update Mood</a>
 </div>
 
-<!-- Habits -->
 <div class="card">
     <h2 class="text-xl font-semibold mb-4 text-gray-700">Your Habits</h2>
     {% if habits %}
         <ul class="space-y-2">
             {% for habit in habits %}
                 <li class="flex justify-between items-center">
-                    <span class="font-medium text-gray-800">{{ habit.habit_name }}</span>
-                    <span class="text-sm text-gray-500">
-                        Streak: {{ streaks[habit.habit_name] * habit.duration }} hours
-                    </span>
+                    <span class="font-medium text-gray-800">{{ habit.habit_name }} ({{ habit.duration }} hrs)</span>
+                    <span class="text-sm text-gray-500">Streak: {{ streaks[habit.habit_name] }} hrs</span>
                 </li>
             {% endfor %}
         </ul>
@@ -52,20 +46,14 @@
     <a href="{{ url_for('habits') }}" class="mt-3 inline-block bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow">Manage Habits</a>
 </div>
 
-<!-- Goals -->
 <div class="card">
     <h2 class="text-xl font-semibold mb-4 text-gray-700">Your Goals</h2>
     {% if goals %}
         <ul class="space-y-2">
             {% for goal in goals %}
                 <li class="flex justify-between items-center">
-                    <span class="{% if goal.completed %}line-through text-gray-400{% else %}text-gray-800{% endif %}">{{ goal.goal }}</span>
-                    <span class="text-sm text-gray-500">
-                        Duration: {{ goal.duration }} hours
-                    </span>
-                    {% if goal.completed %}
-                        <span class="text-green-600 font-semibold ml-2">Completed</span>
-                    {% endif %}
+                    <span class="{% if goal.completed %}line-through text-gray-400{% else %}text-gray-800{% endif %}">{{ goal.goal }} ({{ goal.duration }} hrs)</span>
+                    {% if goal.completed %} <span class="text-green-600 font-semibold">Completed</span> {% endif %}
                 </li>
             {% endfor %}
         </ul>
@@ -75,7 +63,6 @@
     <a href="{{ url_for('goals') }}" class="mt-3 inline-block bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow">Manage Goals</a>
 </div>
 
-<!-- Suggested Habits -->
 <div class="card">
     <h2 class="text-xl font-semibold mb-4 text-gray-700">Suggested Habits</h2>
     {% if suggestions %}
@@ -89,7 +76,6 @@
     {% endif %}
 </div>
 
-<!-- Calendar -->
 <div class="card">
     <h2 class="text-xl font-semibold mb-4 text-gray-700 text-center">Wellness Calendar</h2>
     <div id="calendar"></div>
@@ -102,19 +88,9 @@ document.addEventListener('DOMContentLoaded', function() {
         initialView: 'dayGridMonth',
         events: {{ events|tojson }},
         height: 600,
-        headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,listWeek'
-        },
+        headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,listWeek' },
         eventDisplay: 'block',
-        eventTextColor: 'white',
-        eventContent: function(arg) {
-            // Display mood emoji in calendar events if present
-            let moodEmojis = ["😄","😢","😡","😌","😴","🤯","😐"];
-            let content = arg.event.title;
-            return { html: `<span>${content}</span>` };
-        }
+        eventTextColor: 'white'
     });
     calendar.render();
 });
