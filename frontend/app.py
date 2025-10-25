@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
 # MongoDB setup
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb://localhost:27017/") #change here for mongodb connection
 db = client.mindtrack
 users_col = db.users
 habits_col = db.habits
