@@ -1,22 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Goals - MindTrack</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<meta charset="UTF-8">
+<title>Manage Goals</title>
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<div class="container">
-    <h2>Your Goals</h2>
-    <form method="POST">
-        <input type="text" name="goal" placeholder="Add new goal" required>
-        <button type="submit">Add Goal</button>
-    </form>
-    <ul>
-        {% for goal in goals %}
-        <li>{{ goal.goal }} - {{ '✅ Done' if goal.completed else '❌ Pending' }}</li>
-        {% endfor %}
-    </ul>
-    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+<body class="p-6 bg-gray-100">
+
+<div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold">Manage Your Goals</h1>
+    <a href="{{ url_for('dashboard') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">Back</a>
 </div>
+
+<!-- Add New Goal -->
+<div class="bg-white p-4 rounded-lg shadow mb-4">
+    <form method="POST" action="{{ url_for('goals') }}" class="flex gap-3">
+        <input type="text" name="goal" placeholder="Enter your goal..." required class="flex-grow border px-4 py-2 rounded-lg">
+        <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">Add Goal</button>
+    </form>
+</div>
+
+<!-- Goal List -->
+<div class="bg-white p-4 rounded-lg shadow mb-4">
+    {% if goals %}
+        <ul class="divide-y divide-gray-200">
+            {% for goal in goals %}
+                <li class="py-3 flex justify-between items-center">
+                    <div>
+                        <span class="{% if goal.completed %}line-through text-gray-500{% endif %}">{{ goal.goal }}</span>
+                        {% if goal.completed %} <span class="text-green-600">(Completed)</span> {% endif %}
+                    </div>
+                    <div>
+                        {% if not goal.completed %}
+                            <a href="{{ url_for('complete_goal', goal_id=goal._id) }}" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-sm">Mark as Completed</a>
+                        {% else %}
+                            <a href="{{ url_for('remove_goal', goal_id=goal._id) }}" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm">Remove</a>
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No goals yet.</p>
+    {% endif %}
+</div>
+
 </body>
 </html>

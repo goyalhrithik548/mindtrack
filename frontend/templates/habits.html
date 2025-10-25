@@ -1,22 +1,17 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Habits - MindTrack</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-<div class="container">
-    <h2>Your Habits</h2>
-    <form method="POST">
-        <input type="text" name="habit_name" placeholder="Add new habit" required>
-        <button type="submit">Add Habit</button>
-    </form>
-    <ul>
-        {% for habit in habits %}
-        <li>{{ habit.habit_name }} - Created at: {{ habit.created_at.strftime('%Y-%m-%d') }}</li>
-        {% endfor %}
-    </ul>
-    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
-</div>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Manage Habits</title><script src="https://cdn.tailwindcss.com"></script></head>
+<body class="p-6 bg-gray-100">
+<h1 class="text-2xl font-bold mb-4">Manage Habits</h1>
+<form method="POST" class="flex gap-2 mb-4">
+    <input type="text" name="habit_name" placeholder="Enter habit..." required class="border px-3 py-2 rounded flex-grow">
+    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Add Habit</button>
+</form>
+<ul>
+    {% for habit in habits %}
+        <li>{{ habit.habit_name }}</li>
+    {% endfor %}
+</ul>
+<a href="{{ url_for('dashboard') }}" class="text-blue-600 hover:underline mt-2 inline-block">Back to Dashboard</a>
 </body>
 </html>
