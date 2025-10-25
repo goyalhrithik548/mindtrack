@@ -26,9 +26,9 @@
 </div>
 
 <!-- Today's Mood -->
-<div class="card">
+<div class="card text-center">
     <h2 class="text-xl font-semibold mb-2 text-gray-700">Today's Mood</h2>
-    <p class="text-lg text-gray-800">{{ mood }}</p>
+    <p class="text-5xl my-2">{{ mood }}</p>
     <a href="{{ url_for('mood_input') }}" class="text-blue-600 hover:underline mt-2 inline-block">Update Mood</a>
 </div>
 
@@ -40,7 +40,9 @@
             {% for habit in habits %}
                 <li class="flex justify-between items-center">
                     <span class="font-medium text-gray-800">{{ habit.habit_name }}</span>
-                    <span class="text-sm text-gray-500">Streak: {{ streaks[habit.habit_name] }} days</span>
+                    <span class="text-sm text-gray-500">
+                        Streak: {{ streaks[habit.habit_name] * habit.duration }} hours
+                    </span>
                 </li>
             {% endfor %}
         </ul>
@@ -58,8 +60,11 @@
             {% for goal in goals %}
                 <li class="flex justify-between items-center">
                     <span class="{% if goal.completed %}line-through text-gray-400{% else %}text-gray-800{% endif %}">{{ goal.goal }}</span>
+                    <span class="text-sm text-gray-500">
+                        Duration: {{ goal.duration }} hours
+                    </span>
                     {% if goal.completed %}
-                        <span class="text-green-600 font-semibold">Completed</span>
+                        <span class="text-green-600 font-semibold ml-2">Completed</span>
                     {% endif %}
                 </li>
             {% endfor %}
@@ -103,7 +108,13 @@ document.addEventListener('DOMContentLoaded', function() {
             right: 'dayGridMonth,listWeek'
         },
         eventDisplay: 'block',
-        eventTextColor: 'white'
+        eventTextColor: 'white',
+        eventContent: function(arg) {
+            // Display mood emoji in calendar events if present
+            let moodEmojis = ["😄","😢","😡","😌","😴","🤯","😐"];
+            let content = arg.event.title;
+            return { html: `<span>${content}</span>` };
+        }
     });
     calendar.render();
 });

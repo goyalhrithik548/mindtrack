@@ -6,44 +6,28 @@
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="p-6 bg-gray-100">
+<h1 class="text-3xl font-bold mb-4">Manage Your Goals</h1>
 
-<div class="flex justify-between items-center mb-6">
-    <h1 class="text-3xl font-bold">Manage Your Goals</h1>
-    <a href="{{ url_for('dashboard') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">Back</a>
-</div>
+<form method="POST" class="flex gap-2 mb-4">
+    <input type="text" name="goal" placeholder="Enter your goal..." required class="border px-3 py-2 rounded flex-grow">
+    <input type="number" name="duration" placeholder="Duration in hours" min="1" required class="border px-3 py-2 rounded w-32">
+    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Add Goal</button>
+</form>
 
-<!-- Add New Goal -->
-<div class="bg-white p-4 rounded-lg shadow mb-4">
-    <form method="POST" action="{{ url_for('goals') }}" class="flex gap-3">
-        <input type="text" name="goal" placeholder="Enter your goal..." required class="flex-grow border px-4 py-2 rounded-lg">
-        <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">Add Goal</button>
-    </form>
-</div>
+<ul>
+    {% for goal in goals %}
+        <li>
+            {{ goal.goal }} - Duration: {{ goal.duration }} hours
+            {% if goal.completed %}
+                <span class="text-green-600">Completed</span>
+            {% else %}
+                <a href="{{ url_for('complete_goal', goal_id=goal._id) }}" class="bg-green-500 text-white px-2 py-1 rounded ml-2">Mark Completed</a>
+            {% endif %}
+            <a href="{{ url_for('remove_goal', goal_id=goal._id) }}" class="bg-red-500 text-white px-2 py-1 rounded ml-2">Remove</a>
+        </li>
+    {% endfor %}
+</ul>
 
-<!-- Goal List -->
-<div class="bg-white p-4 rounded-lg shadow mb-4">
-    {% if goals %}
-        <ul class="divide-y divide-gray-200">
-            {% for goal in goals %}
-                <li class="py-3 flex justify-between items-center">
-                    <div>
-                        <span class="{% if goal.completed %}line-through text-gray-500{% endif %}">{{ goal.goal }}</span>
-                        {% if goal.completed %} <span class="text-green-600">(Completed)</span> {% endif %}
-                    </div>
-                    <div>
-                        {% if not goal.completed %}
-                            <a href="{{ url_for('complete_goal', goal_id=goal._id) }}" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-sm">Mark as Completed</a>
-                        {% else %}
-                            <a href="{{ url_for('remove_goal', goal_id=goal._id) }}" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm">Remove</a>
-                        {% endif %}
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No goals yet.</p>
-    {% endif %}
-</div>
-
+<a href="{{ url_for('dashboard') }}" class="text-blue-600 hover:underline mt-2 inline-block">Back to Dashboard</a>
 </body>
 </html>
