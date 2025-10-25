@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Today's Mood - MindTrack</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h2>Hello {{ session['username'] }}!</h2>
+    <p>How are you feeling today?</p>
+    <form method="POST">
+        <input type="text" name="mood" placeholder="e.g., Happy, Tired, Motivated" required>
+        <button type="submit">Submit Mood</button>
+    </form>
+</div>
+</body>
+</html>

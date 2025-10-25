@@ -5,11 +5,53 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<h1>Welcome {{ username }}!</h1>
-<nav>
-    <a href="{{ url_for('habits') }}">Habits</a> |
-    <a href="{{ url_for('mood') }}">Mood Tracker</a> |
-    <a href="{{ url_for('logout') }}">Logout</a>
-</nav>
+<div class="dashboard-container">
+    <header>
+        <h1>Welcome, {{ username }}!</h1>
+        <p>Today's Mood: <strong>{{ mood }}</strong></p>
+        <p class="motivation">{{ motivation }}</p>
+        <button onclick="window.location.href='{{ url_for('logout') }}'" class="logout-btn">Logout</button>
+    </header>
+
+    <main class="cards-container">
+        <div class="card">
+            <h2>Habits & Streaks</h2>
+            <ul>
+                {% for habit in habits %}
+                    <li>{{ habit.habit_name }} - Streak: {{ streaks[habit.habit_name] }} days</li>
+                {% endfor %}
+                {% if not habits %}
+                    <li>No habits yet.</li>
+                {% endif %}
+            </ul>
+            <button onclick="window.location.href='{{ url_for('habits') }}'">Track Habits</button>
+        </div>
+
+        <div class="card">
+            <h2>Goals</h2>
+            <ul>
+                {% for goal in goals %}
+                    <li>{{ goal.goal }} - {{ '✅ Done' if goal.completed else '❌ Pending' }}</li>
+                {% endfor %}
+                {% if not goals %}
+                    <li>No goals yet.</li>
+                {% endif %}
+            </ul>
+            <button onclick="window.location.href='{{ url_for('goals') }}'">Your Goals</button>
+        </div>
+
+        <div class="card">
+            <h2>Suggested Habits</h2>
+            <ul>
+                {% for s in suggestions %}
+                    <li>{{ s }}</li>
+                {% endfor %}
+                {% if not suggestions %}
+                    <li>All popular habits tracked!</li>
+                {% endif %}
+            </ul>
+        </div>
+    </main>
+</div>
 </body>
 </html>

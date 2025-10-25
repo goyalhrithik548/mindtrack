@@ -5,16 +5,18 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<h2>Your Habits</h2>
-<form method="POST">
-    <input type="text" name="habit_name" placeholder="New Habit" required>
-    <button type="submit">Add Habit</button>
-</form>
-<ul>
-{% for habit in habits %}
-    <li>{{ habit.name }} - {{ 'Done' if habit.completed else 'Pending' }}</li>
-{% endfor %}
-</ul>
-<a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+<div class="container">
+    <h2>Your Habits</h2>
+    <form method="POST">
+        <input type="text" name="habit_name" placeholder="Add new habit" required>
+        <button type="submit">Add Habit</button>
+    </form>
+    <ul>
+        {% for habit in habits %}
+        <li>{{ habit.habit_name }} - Created at: {{ habit.created_at.strftime('%Y-%m-%d') }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</div>
 </body>
 </html>

@@ -1,76 +1,56 @@
-/* General page styling */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(to right, #74ffdc, #69f1eb);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    background: #f5f7fa;
     margin: 0;
-}
-
-/* Card container for forms */
-.container {
-    background-color: white;
-    padding: 40px 50px;
-    border-radius: 15px;
-    box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
-    width: 350px;
-    text-align: center;
-}
-
-/* Headings */
-h2 {
-    margin-bottom: 25px;
+    padding: 0;
     color: #333;
 }
 
-/* Inputs */
+.container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
 input {
-    display: block;
-    width: 100%;
-    padding: 12px;
+    width: 90%;
+    padding: 10px;
     margin: 10px 0;
     border-radius: 8px;
     border: 1px solid #ccc;
-    box-sizing: border-box;
 }
 
-/* Buttons */
 button {
-    width: 100%;
-    padding: 12px;
+    padding: 10px 20px;
+    margin-top: 10px;
     background-color: #6C63FF;
     color: white;
     border: none;
     border-radius: 8px;
-    font-weight: bold;
     cursor: pointer;
-    margin-top: 15px;
 }
 
-button:hover {
-    background-color: #574FD6;
-}
+button:hover { background-color: #574FD6; }
 
-/* Links */
-p a {
-    color: #6C63FF;
-    text-decoration: none;
-    font-weight: bold;
-}
+p.error { color: red; }
+p.success { color: green; }
 
-p a:hover {
-    text-decoration: underline;
-}
+/* Dashboard */
+.dashboard-container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+header { text-align: center; margin-bottom: 40px; }
+header h1 { color: #6C63FF; font-size: 2.5em; margin-bottom: 10px; }
+header .motivation { font-style: italic; margin-bottom: 10px; }
+.logout-btn { background-color: #ff4b5c; color: white; padding: 10px 15px; border: none; border-radius: 8px; cursor: pointer; }
+.logout-btn:hover { background-color: #e03a4b; }
 
-/* Flash messages */
-p.error {
-    color: red;
-    font-weight: bold;
-}
-
-p.success {
-    color: green;
-    font-weight: bold;
-}
+.cards-container { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+.card { background: white; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); padding: 20px; width: 280px; text-align: center; transition: transform 0.2s; }
+.card:hover { transform: translateY(-5px); }
+.card h2 { color: #6C63FF; margin-bottom: 10px; }
+.card ul { list-style: none; padding: 0; margin-bottom: 10px; }
+.card button { padding: 8px 15px; border: none; border-radius: 8px; background: #6C63FF; color: white; cursor: pointer; }
+.card button:hover { background: #574FD6; }

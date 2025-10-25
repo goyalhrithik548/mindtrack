@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Goals - MindTrack</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h2>Your Goals</h2>
+    <form method="POST">
+        <input type="text" name="goal" placeholder="Add new goal" required>
+        <button type="submit">Add Goal</button>
+    </form>
+    <ul>
+        {% for goal in goals %}
+        <li>{{ goal.goal }} - {{ '✅ Done' if goal.completed else '❌ Pending' }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</div>
+</body>
+</html>
