@@ -98,9 +98,14 @@ mindtrack/
 
    * Flask retrieves user mood data from MongoDB.
    * Frontend displays graphs/charts to show trends (weekly, monthly).
+  
+5. **Result**
+
+   * Deployed Link - https://hack-x026.onrender.com/dashboard
+   * Demo Video - 
 
 
-5. **Future Enhancements**
+6. **Future Enhancements**
 
    * Integration with **facial expression recognition** for automatic mood detection.
    * Personalized recommendations or affirmations based on mood history.
