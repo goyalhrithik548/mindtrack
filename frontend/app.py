@@ -4,12 +4,17 @@ from datetime import datetime, timedelta
 from bson import ObjectId
 from huggingface_hub import InferenceClient
 import os
+from dotenv import load_dotenv
+
+# ------------------ Load Environment Variables ------------------
+load_dotenv()  # this loads variables from .env file
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"
+app.secret_key = os.getenv("SECRET_KEY")
 
 # ------------------ MongoDB Setup ------------------
-client = MongoClient("mongodb+srv://anantkhandelwal3_db_user:ORkE0ClXSeG2XYtl@cluster0.e5jjufr.mongodb.net/?appName=Cluster0")
+mongo_uri = os.getenv("MONGO_URI")
+client = MongoClient(mongo_uri)
 db = client.mindtrack
 users_col = db.users
 habits_col = db.habits
@@ -17,8 +22,8 @@ moods_col = db.moods
 goals_col = db.goals
 
 # ------------------ Hugging Face Setup ------------------
-os.environ["HF_TOKEN"] = "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"
-HF_MODEL = "meta-llama/Llama-3.1-8B-Instruct"
+os.environ["HF_TOKEN"] = os.getenv("HF_TOKEN")
+HF_MODEL = os.getenv("HF_MODEL")
 hf_client = InferenceClient()
 
 def call_hf_model(prompt):
