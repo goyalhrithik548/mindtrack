@@ -3,7 +3,7 @@
 ## 🔹 Introduction
 
 **MindTrack** is an AI-integrated mood tracking platform built using **Flask** and **MongoDB** to help users monitor and analyze their emotional well-being.
-Users can securely log in, record their daily moods, write personal notes, and visualize emotional patterns through an interactive dashboard.
+Users can securely log in, record their daily moods, and visualize emotional patterns through an interactive dashboard.
 
 This project focuses on creating a user-friendly, privacy-first interface that encourages emotional self-awareness and personal growth.
 
