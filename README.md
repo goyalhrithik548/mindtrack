@@ -16,9 +16,9 @@ Without such self-awareness, it becomes difficult to identify triggers, manage s
 
 **MindTrack** addresses this by:
 
-* Allowing users to **log moods and daily notes** easily.
+* Allowing users to **log and daily moods** easily.
 * Providing **visual insights** through charts and dashboards.
-* Optionally using **AI-based sentiment analysis** to predict mood scores.
+* Displaying **motivational quotes** using the Hugging Face API every time a user logs in, tailored to their mood.
 * Ensuring all data is **securely stored** using encrypted databases and GitHub Secrets.
 
 ---
@@ -75,13 +75,24 @@ mindtrack/
    * Credentials are stored securely in MongoDB.
    * Flask manages sessions for authenticated users.
 
-2. **Mood Entry**
+2. **Mood Entry and Update**
 
-   * User selects their current mood or writes a note about their day.
+   * User selects their current mood based on emojis.
+   * Users can update their mood multiple times everytime they login.
    * Data is saved in MongoDB with the date and mood score.
-   * Optional: AI model determines mood level automatically.
 
-3. **Data Storage**
+3. **Goals & Habit Tracking**
+
+   * Users can set personal goals and mark progress.
+   * Users can track habits daily and update them after logging in.
+   * All entries are linked to the user in MongoDB.
+  
+4. **Motivational Quote**
+
+   * Hugging Face API fetches a motivational quote every time the user logs in.
+   * Quotes are optionally tailored based on the user’s current mood to boost positivity.
+
+5. **Data Storage**
 
    * Each mood entry is linked to the user’s email in the database.
    * Example document:
@@ -94,13 +105,18 @@ mindtrack/
      }
      ```
 
-4. **Dashboard Visualization**
+6. **Dashboard Visualization**
 
    * Flask retrieves user mood data from MongoDB.
    * Frontend displays graphs/charts to show trends (weekly, monthly).
+  
+7. **Result**
+
+   * Deployed Link - https://hack-x026.onrender.com/dashboard
+   * Demo Video - 
 
 
-5. **Future Enhancements**
+8. **Future Enhancements**
 
    * Integration with **facial expression recognition** for automatic mood detection.
    * Personalized recommendations or affirmations based on mood history.
