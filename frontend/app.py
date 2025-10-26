@@ -7,7 +7,7 @@ import os
 from dotenv import load_dotenv
 
 # ------------------ Load Environment Variables ------------------
-load_dotenv()  # this loads variables from .env file
+load_dotenv()  # Load variables from .env
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
@@ -22,34 +22,36 @@ moods_col = db.moods
 goals_col = db.goals
 
 # ------------------ Hugging Face Setup ------------------
-os.environ["HF_TOKEN"] = os.getenv("HF_TOKEN")
+HF_TOKEN = os.getenv("HF_TOKEN")
 HF_MODEL = os.getenv("HF_MODEL")
-hf_client = InferenceClient()
+hf_client = InferenceClient(token=HF_TOKEN)
 
 def call_hf_model(prompt):
+    """Generate motivational quote using Hugging Face."""
     try:
         response = hf_client.chat_completion(
-            messages=[{"role": "user", "content": prompt}],
             model=HF_MODEL,
-            max_tokens=120,
-            temperature=0.8,
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=100,
+            temperature=0.8
         )
-        if response.choices:
-            return response.choices[0].message.content.strip()
-        else:
-            return "Keep going! You're doing great!"
-    except Exception:
+        if response and response.choices:
+            quote = response.choices[0].message.content.strip()
+            return quote or "Stay consistent — small steps make big changes!"
+        return "Stay consistent — small steps make big changes!"
+    except Exception as e:
+        print("⚠️ Hugging Face API Error:", e)
         return "Keep going! You're doing great!"
 
 def get_personalized_quote(user_email):
+    """Build personalized prompt based on user habits and mood."""
     user = users_col.find_one({"email": user_email})
     if not user:
-        return "Welcome to MindTrack! Let's start building positive habits!"
-    
+        return "Welcome to MindTrack! Let’s start building positive habits!"
+
     username = user.get("username", "friend")
 
-    latest_habits_cursor = habits_col.find({"user_email": user_email}).sort("created_at", -1).limit(5)
-    latest_habits = list(latest_habits_cursor)
+    latest_habits = list(habits_col.find({"user_email": user_email}).sort("created_at", -1).limit(5))
     habit_names = [h['habit_name'] for h in latest_habits]
     habits_string = ", ".join(habit_names) if habit_names else "no current habits"
 
@@ -58,9 +60,9 @@ def get_personalized_quote(user_email):
     mood_type = mood_doc.get("mood", "neutral") if mood_doc else "neutral"
 
     prompt = (
-        f"You are a motivational coach. Generate a short 1–3 line personalized quote for {username}. "
-        f"They are currently focusing on habits such as {habits_string}. "
-        f"Their current mood is {mood_type}. Make it inspiring, positive, and natural."
+        f"You are a motivational coach. Generate a short (1–3 line) quote for {username}. "
+        f"They are working on habits like {habits_string}. Their current mood is {mood_type}. "
+        f"Make it positive, personal, and natural."
     )
 
     return call_hf_model(prompt)
@@ -126,7 +128,7 @@ def login():
         if user:
             session['email'] = email
             session['username'] = user['username']
-            return redirect(url_for('mood_input'))  # <-- reroute to mood input first
+            return redirect(url_for('mood_input'))
         else:
             flash("Invalid credentials", "error")
     return render_template('login.html')
@@ -138,22 +140,17 @@ def mood_input():
         return redirect(url_for('login'))
 
     moods_options = [
-        {"emoji":"😄","text":"Happy"},
-        {"emoji":"😢","text":"Sad"},
-        {"emoji":"😡","text":"Angry"},
-        {"emoji":"😌","text":"Relaxed"},
-        {"emoji":"😴","text":"Sleepy"},
-        {"emoji":"🤯","text":"Stressed"},
-        {"emoji":"😐","text":"Neutral"}
+        {"emoji": "😄", "text": "Happy"},
+        {"emoji": "😢", "text": "Sad"},
+        {"emoji": "😡", "text": "Angry"},
+        {"emoji": "😌", "text": "Relaxed"},
+        {"emoji": "😴", "text": "Sleepy"},
+        {"emoji": "🤯", "text": "Stressed"},
+        {"emoji": "😐", "text": "Neutral"}
     ]
 
     if request.method == 'POST':
         mood = request.form['mood']
-        allowed_emojis = [m['emoji'] for m in moods_options]
-        if mood not in allowed_emojis:
-            flash("Invalid mood selected!", "error")
-            return redirect(url_for('mood_input'))
-
         moods_col.insert_one({
             "user_email": session['email'],
             "mood": mood,
@@ -168,7 +165,7 @@ def mood_input():
 def dashboard():
     if 'email' not in session:
         return redirect(url_for('login'))
-    
+
     email = session['email']
     username = session['username']
 
@@ -182,6 +179,7 @@ def dashboard():
     motivation = get_motivation(email)
     suggestions = suggest_habits(email)
 
+    # Calendar Events
     events = []
     for m in moods_col.find({"user_email": email}):
         events.append({
@@ -307,6 +305,6 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
-# ---------- Run App ----------
+# ---------- Run ----------
 if __name__ == "__main__":
     app.run(debug=True)
