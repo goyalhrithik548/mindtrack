@@ -125,7 +125,7 @@ mindtrack/
 
 ---
 
-## 👨‍💻 Team Members
+## 👨‍💻 Team Name - "404 Not Founders"
 
 * **Hrithik Goyal** – Backend & Database Integration
 * **Nikhil Mahesh** – Frontend Design & GitHub Management
