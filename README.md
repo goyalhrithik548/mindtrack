@@ -118,7 +118,6 @@ mindtrack/
 
 8. **Future Enhancements**
 
-   * Integration with **facial expression recognition** for automatic mood detection.
    * Personalized recommendations or affirmations based on mood history.
    * Allow sharing progress with friends for social motivation. 
    * Add lightweight AI (optional API) to suggest “new habits to try” based on user history.
